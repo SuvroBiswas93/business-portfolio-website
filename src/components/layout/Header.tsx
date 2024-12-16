@@ -1,34 +1,41 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Moon, Sun, Menu } from 'lucide-react';
-import { Button, Drawer } from 'antd';
-import { RootState } from '../../store';
-import { toggleTheme } from '../../store/themeSlice';
+import React, {useEffect} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import { Moon, Sun, Menu } from "lucide-react";
+import { Button, Drawer } from "antd";
+import { RootState } from "../../store";
+import { toggleTheme } from "../../store/themeSlice";
 
 export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const dispatch = useDispatch();
   const darkMode = useSelector((state: RootState) => state.theme.darkMode);
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   const navItems = [
-    { label: 'Home', path: '/' },
-    { label: 'Services', path: '/services' },
-    { label: 'Projects', path: '/projects' },
-    { label: 'Team', path: '/team' },
-    { label: 'Contact', path: '/contact' },
+    { label: "Home", path: "/" },
+    { label: "Services", path: "/services" },
+    { label: "Projects", path: "/projects" },
+    { label: "Team", path: "/team" },
+    { label: "Contact", path: "/contact" },
   ];
 
   return (
     <header className="fixed w-full top-0 z-50 bg-white dark:bg-gray-900">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="text-2xl font-bold text-blue-600">
+          <Link
+            to="/"
+            className="text-2xl font-bold bg-gradient-to-r from-cyan-300 to-green-400 text-transparent bg-clip-text"
+          >
             BusinessPro
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:ml-5  md:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link
                 key={item.path}
@@ -38,12 +45,13 @@ export const Header: React.FC = () => {
                 {item.label}
               </Link>
             ))}
-            <Button
-              type="text"
-              onClick={() => dispatch(toggleTheme())}
-              icon={darkMode ? <Sun size={20} /> : <Moon size={20} />}
-            />
           </div>
+          <Button
+            className="align-middle w-max ml-auto lg:ml-0 lg:w-auto"
+            type="text"
+            onClick={() => dispatch(toggleTheme())}
+            icon={darkMode ? <Sun size={20} /> : <Moon size={20} />}
+          />
 
           {/* Mobile Menu Button */}
           <Button
